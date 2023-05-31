@@ -1,0 +1,17 @@
+{
+  "name": "spa",
+  "version": "1.0.0",
+  "description": "바닐라 자바스크립트로 만드는 싱글 페이지 어플리케이션\n  https://velog.io/@nemo/Vanilla-JavaScript-SPA-1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
