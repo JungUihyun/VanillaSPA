@@ -1,6 +1,8 @@
 export default class {
-  constructor() {
-
+  // params 값 전달받기
+  constructor(params) {
+    this.params = params;
+    console.log(this.params);
   }
 
   // 페이지 제목

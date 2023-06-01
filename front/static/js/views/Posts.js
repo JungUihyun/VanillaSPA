@@ -1,8 +1,9 @@
 import AbstractView from "./AbstractView";
 
 export default class extends AbstractView {
-  constructor() {
-    super();
+  // params 값 전달받기
+  constructor(params) {
+    super(params);
     this.setTitle("Posts");
   }
 

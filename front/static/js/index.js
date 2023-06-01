@@ -3,6 +3,19 @@ import NotFound from "./views/NotFound";
 import Posts from "./views/Posts";
 import Settings from "./views/Settings";
 
+// 정규식으로 파라미터 나누기
+const pathToRegex = path => new RegExp('^' + path.replace(/\//g, '\\/').replace(/:\w+/g, '(.+)') + '$');
+
+// 활성화된 페이지의 파라미터 가져와 배열에 담기
+const getParams = match => {
+  const values = match.result.slice(1);
+  const keys = Array.from(match.route.path.matchAll(/:(\w+)/g)).map(result => result[1]);
+
+  return Object.fromEntries(keys.map((key, i) => {
+    return key, values[i];
+  }));
+}
+
 // 페이지 전환 함수
 const navigateTo = url => {
   history.pushState(null, null, url);
@@ -15,6 +28,8 @@ const router = async () => {
   const routes = [
     { path: '/', view: Dashboard },
     { path: '/posts', view: Posts },
+    // 파라미터가 추가됐을 경우 route 추가
+    { path: '/posts/:id/:something', view: Posts },
     { path: '/settings', view: Settings },
     // 404 route 생성
     { path: "/404", view: NotFound },
@@ -24,22 +39,24 @@ const router = async () => {
   const potentialMatches = routes.map(route => {
     return {
       route: route,
-      isMatch: location.pathname === route.path
+      // result로 변경하고 정규식과 일치하는 pathname을 담는다.
+      result: location.pathname.match(pathToRegex(route.path))
     };
   });
 
-  // find 메서드를 사용해 isMatch가 true인 객체를 찾음
-  let match = potentialMatches.find(potentialMatch => potentialMatch.isMatch);
-  // isMatch가 true인 객체가 없을 때 404 페이지로 이동
+  // 정규식과 일치하는 pathname이 null이 아닌 경우 담기
+  let match = potentialMatches.find(potentialMatch => potentialMatch.result !== null);
+  
+  // 없는 페이지일 때, 404 페이지로 이동하고 result에는 해당 pathname ekarl
   if (!match) {
     match = {
       route: routes[routes.length - 1],
-      isMatch: true
+      result: [location.pathname]
     };
   }
 
-  // 활성화된 view 닫기
-  const view = new match.route.view();
+  // match 정보를 getParams에 보내 배열로 출력해서 view에 담기
+  const view = new match.route.view(getParams(match));
 
   // #app 엘리먼트에 활성화된 view의 html 삽입
   document.querySelector('#app').innerHTML = await view.getHtml();
