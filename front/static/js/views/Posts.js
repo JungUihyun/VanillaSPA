@@ -1,4 +1,4 @@
-import AbstractView from "./AbstractView";
+import AbstractView from "./AbstractView.js";
 
 export default class extends AbstractView {
   // params 값 전달받기

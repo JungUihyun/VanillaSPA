@@ -1,7 +1,7 @@
-import Dashboard from "./views/Dashboard";
-import NotFound from "./views/NotFound";
-import Posts from "./views/Posts";
-import Settings from "./views/Settings";
+import Dashboard from "./views/Dashboard.js";
+import NotFound from "./views/NotFound.js";
+import Posts from "./views/Posts.js";
+import Settings from "./views/Settings.js";
 
 // 정규식으로 파라미터 나누기
 const pathToRegex = path => new RegExp('^' + path.replace(/\//g, '\\/').replace(/:\w+/g, '(.+)') + '$');
@@ -47,7 +47,7 @@ const router = async () => {
   // 정규식과 일치하는 pathname이 null이 아닌 경우 담기
   let match = potentialMatches.find(potentialMatch => potentialMatch.result !== null);
   
-  // 없는 페이지일 때, 404 페이지로 이동하고 result에는 해당 pathname ekarl
+  // 없는 페이지일 때, 404 페이지로 이동하고 result에는 해당 pathname 담기
   if (!match) {
     match = {
       route: routes[routes.length - 1],
